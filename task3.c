@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <func.h>
+
+typedef void *(*vertex)();
+
+void *start();
+void *word();
+void *pipe1();
+void *aper1();
+void *greater1();
+void *spec();
+void *newline();
+void *stop();
+
+int c;
+
+int main() {
+	vertex v = start;
+	c = get_sym();
+	init_list();
+ 		
+	while(1)
+		v = v();
+}
+
+
+/* Interface for working with a L-graph. */
+
+void *start() {
+	if (c == ' ' || c == '\t') {
+		c = get_sym();
+		return start;
+	} else if (c == EOF) {
+		term_list();
+		print_list();
+		sort();
+		print_list();
+		clear_list();
+		return stop;
+	} else if (c == '\n') {
+		term_list();
+		print_list();
+		sort();
+		print_list();
+		c = get_sym();
+		return newline;
+	} else {
+		char prev = c;
+		init_buf();
+		add_sym(c);
+		c = get_sym();
+		switch(prev) {
+			case ';': case '<': case '(': case ')': return spec;
+			case '|': return pipe1;
+			case '&': return aper1;
+			case '>': return greater1;
+			default: return word;
+		}
+	}
+}
+
+void *word() {
+	if (sym_set(c)) {
+		add_sym(c);
+		c = get_sym();
+		return word;
+	} else {
+		add_word();
+		return start;
+	}	
+}
+
+void *pipe1() {
+	if (c == '|') {
+		add_sym(c);
+		c = get_sym();
+		return spec;
+	} else {
+		add_word();
+		return start;
+	}
+}
+
+void *aper1() {
+	if (c == '&') {
+		add_sym(c);
+		c = get_sym();
+		return spec;
+	} else {
+		add_word();
+		return start;
+	}
+}
+
+void *greater1() {
+	if (c == '>') {
+		add_sym(c);
+		c = get_sym();
+		return spec;
+	} else {
+		add_word();
+		return start;
+	}
+}
+
+void *spec() {
+	add_word();
+	return start;
+}
+
+void *newline() {
+	clear_list();
+	return start;
+}
+
+void *stop() {
+	exit(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
