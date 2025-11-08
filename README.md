@@ -6,7 +6,7 @@ File list.c defines structures and functions to work with a list.
 File get.c defines functions to read from input file.
 File func.h declares functions from list.c andd get.c.
 
-##task3.c
+## task3.c
 void *start(); - start node
 void *word(); - word node
 void *pipe1(); - node with symbol '|'
@@ -18,7 +18,7 @@ void *stop(); - stop node
 
 int c - global variable.
 
-##list.c
+## list.c
 The list is implemented through array structure.
 void init_list() - initializes a list
 void clear_list() - clears the list
